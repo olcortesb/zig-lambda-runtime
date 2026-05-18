@@ -10,7 +10,7 @@
   ⚡ 🦎
 </div>
 
-[![Main](https://github.com/softprops/zig-lambda-runtime/actions/workflows/main.yml/badge.svg)](https://github.com/softprops/zig-lambda-runtime/actions/workflows/main.yml) ![License Info](https://img.shields.io/github/license/softprops/zig-lambda-runtime) ![Release](https://img.shields.io/github/v/release/softprops/zig-lambda-runtime) [![Zig Support](https://img.shields.io/badge/zig-0.12.0-black?logo=zig)](https://ziglang.org/documentation/0.12.0/)
+[![Main](https://github.com/softprops/zig-lambda-runtime/actions/workflows/main.yml/badge.svg)](https://github.com/softprops/zig-lambda-runtime/actions/workflows/main.yml) ![License Info](https://img.shields.io/github/license/softprops/zig-lambda-runtime) ![Release](https://img.shields.io/github/v/release/softprops/zig-lambda-runtime) [![Zig Support](https://img.shields.io/badge/zig-0.16.0-black?logo=zig)](https://ziglang.org/documentation/0.16.0/)
 
 ## 🍬 features
 
@@ -172,6 +172,40 @@ capabilities = "CAPABILITY_IAM"
 ```
 
 Then run `sam deploy` to deploy it
+
+## 🚀 quick deploy (all-in-one)
+
+Build, package, and deploy in one go:
+
+```bash
+# 1. Build for ARM Linux
+zig build apigw-example -Dtarget=aarch64-linux -Doptimize=ReleaseFast --summary all
+
+# 2. Package into zip
+zip -jq lambda.zip zig-out/bin/bootstrap
+
+# 3. Deploy with SAM
+cd infra && sam deploy
+```
+
+Or use the provided `Justfile`:
+
+```bash
+just deploy
+```
+
+After deploying, get your function URL:
+
+```bash
+aws lambda get-function-url-config --function-name zig-demo --region us-east-1 --query 'FunctionUrl' --output text
+```
+
+Test it:
+
+```bash
+curl -s https://<your-function-url>.lambda-url.us-east-1.on.aws/
+# {"message":"hello world"}
+```
 
 ## 🥹 for budding ziglings
 

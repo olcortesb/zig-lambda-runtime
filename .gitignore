@@ -3,3 +3,4 @@ zig-cache
 lambda.zip
 docs
 infra/.aws-sam/sync.toml
+.zig-cache
